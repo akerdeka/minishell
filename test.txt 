@@ -1,0 +1,9 @@
+Makefile
+includes
+libft
+main.c
+minishell
+srcs
+test.c
+test.txt 
+tester.sh

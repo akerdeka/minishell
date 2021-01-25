@@ -1,0 +1,17 @@
+Makefile
+includes
+libft
+main.c
+minishell
+srcs
+test.c
+tester.sh
+Makefile
+includes
+libft
+main.c
+minishell
+srcs
+test
+test.c
+tester.sh

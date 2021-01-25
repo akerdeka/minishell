@@ -1,0 +1,10 @@
+Makefile
+a.out
+includes
+libft
+main.c
+minishell
+srcs
+test.c
+test1.c
+tester.sh
