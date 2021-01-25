@@ -103,6 +103,7 @@ int				main(int argc __attribute__((unused)),
 	ft_init(ms);
 	while (1)
 	{
+		ft_printf("Minishell > ");
 		get_next_line(0, &ms->line);
 		ft_testing(ms);
 		while (ms->command_tab[i])

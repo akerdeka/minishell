@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:44:55 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/25 13:59:45 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/01/25 14:51:01 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void	try_exec_read(t_minishell *ms)
 	char	*buffer;
 
 	buffer = malloc(sizeof(char *) * 10000);
-	free(ms->line);
+	ft_strdel_free(&(ms->line));
 	ms->line = ft_strdup("");
 	close(ms->pfd[1]);
 	while (((ret = read(ms->pfd[0], buffer, 1023)) > 0))
@@ -87,7 +87,7 @@ static void	try_exec(t_minishell *ms)
 {
 	int		id;
 
-	free(ms->line);
+	ft_strdel_free(&(ms->line));
 	ms->line = ft_strdup("");
 	get_path_arg(ms);
 	pipe(ms->pfd);
@@ -96,7 +96,10 @@ static void	try_exec(t_minishell *ms)
 	{
 		close(ms->pfd[0]);
 		dup2(ms->pfd[1], 1);
-		execve(ms->argv[0], ms->argv, NULL);
+		if (execve(ms->argv[0], ms->argv, ms->envp) == -1)
+		{
+			exit(1);
+		}
 	}
 	else
 	{
@@ -109,7 +112,7 @@ void	get_different_option(t_minishell *ms, int i)
 	if (!(get_command(ms, i)))
 		ft_exit(ms);
 	if (ft_strcmp(ms->command, "echo") == 0)
-		get_echo(ms);
+		get_echo(ms, i);
 	else if (ft_strcmp(ms->command, "pwd") == 0)
 		ft_pwd(ms);
 	else if (ft_strcmp(ms->command, "cd") == 0)

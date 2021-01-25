@@ -2,6 +2,7 @@
 #include "errno.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 typedef struct      env_var //liste chaînée pour variable d'environnement 
 {
     char    *var;
@@ -32,7 +33,7 @@ typedef struct		s_minishell
 
 
 int			get_quotes(t_minishell *ms);
-int			get_echo(t_minishell *ms);
+int			get_echo(t_minishell *ms, int i);
 int			get_command(t_minishell *ms, int i);
 void		ft_exit(t_minishell *ms);
 void		check_exit(t_minishell *ms);

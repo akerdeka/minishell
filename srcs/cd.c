@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 17:20:08 by akerdeka          #+#    #+#             */
-/*   Updated: 2021/01/25 14:01:07 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/01/25 14:12:44 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static void	ft_cd_errors(t_minishell *ms)
 	if (errno == 20)
 		ft_printf("%s is not a directory.\n", ms->line);
 	errno = 0;
+	ft_strdel_free(&(ms->line));
+	ms->line = ft_strdup("");
 }
 
 int			ft_cd(t_minishell *ms, int j)
@@ -33,7 +35,7 @@ int			ft_cd(t_minishell *ms, int j)
 	i = -1;
 	if (!(str = malloc(sizeof(char*) * (ft_strlen(ms->command_tab[j]) + 1))))
 		ft_exit(ms);
-	while (ms->command_tab[++i])
+	while (ms->command_tab[j][++i])
 	{
 		while (ms->command_tab[j][i] == ' ')
 		{

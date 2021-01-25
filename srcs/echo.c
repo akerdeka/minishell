@@ -14,16 +14,17 @@
 //GERER LES EXIT
 //PARSING CASSE SUR LE CAS '"salut"' '"salut"'
 
-int		get_echo(t_minishell *ms)
+int		get_echo(t_minishell *ms, int i)
 {
-	if (ms->line[0] == '-' && ms->line[1] == 'n')
+	if (ms->command_tab[i][0] == '-' && ms->command_tab[i][1] == 'n')
 	{
 		if (!(get_command(ms, 0)))
 			return (0);
 	}
 	else
 	{
-		ms->line = ft_strjoin_free_s1(ms->line, "\n");
+		ft_strdel_free(&(ms->line));
+		ms->line = ft_strjoin_free_s1(ms->command_tab[i], "\n");
 	}
 	return (1);
 }

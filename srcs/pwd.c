@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbesson <pbesson@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:25:39 by pbesson           #+#    #+#             */
-/*   Updated: 2020/09/21 20:25:39 by pbesson          ###   ########lyon.fr   */
+/*   Updated: 2021/01/25 14:13:02 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,6 @@ void	ft_pwd(t_minishell *ms)
 		ft_printf("%s\n", ms->current_workdir);
 		ft_strdel(ms->current_workdir);
 	}
+	ft_strdel_free(&(ms->line));
+	ms->line = ft_strdup("");
 }

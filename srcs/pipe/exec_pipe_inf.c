@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_inf.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasayad <wasayad@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:39:13 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/22 16:03:28 by wasayad          ###   ########lyon.fr   */
+/*   Updated: 2021/01/25 14:16:43 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,13 @@ void	get_different_option_pipe_inf(t_minishell *ms, int i)
 	if (!(get_command_pipe_inf(ms, i)))
 		ft_exit(ms);
 	if (ft_strcmp(ms->command, "echo") == 0)
-		get_echo(ms);
+		get_echo(ms, i);
 	else if (ft_strcmp(ms->command, "pwd") == 0)
 		ft_pwd(ms);
+	else if (ft_strcmp(ms->command, "cd") == 0)
+		ft_printf("");
+	else if (ft_strcmp(ms->command, "exit") == 0)
+		ft_printf("");
 	else if (ft_strcmp(ms->command, "export") == 0)
 		ft_export(ms);
 	else if (ft_strcmp(ms->command, "unset") == 0)
