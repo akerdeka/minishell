@@ -38,7 +38,6 @@ int			get_quotes(t_minishell *ms);
 int			get_echo(t_minishell *ms, int i);
 int			get_command(t_minishell *ms, int i);
 void		ft_exit(t_minishell *ms);
-void		check_exit(t_minishell *ms);
 
 
 int			remove_no_backslash_quotes(t_minishell *ms, char c);
@@ -49,7 +48,7 @@ void		backslash_checker(t_minishell *ms);
 
 void		ft_pwd(t_minishell *ms);
 int			ft_cd(t_minishell *ms, int j);
-void		check_exit(t_minishell *ms);
+void		check_exit(t_minishell *ms, int j);
 void		ft_exit(t_minishell *ms);
 int 	    ft_export(t_minishell *ms);
 void        ft_unset(t_minishell *ms);

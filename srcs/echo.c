@@ -18,8 +18,9 @@ int		get_echo(t_minishell *ms, int i)
 {
 	if (ms->command_tab[i][0] == '-' && ms->command_tab[i][1] == 'n')
 	{
-		if (!(get_command(ms, 0)))
+		if (!(get_command(ms, i)))
 			return (0);
+		ms->line = ft_strdup(ms->command_tab[i]);
 	}
 	else
 	{

@@ -30,14 +30,15 @@ void	ft_exit(t_minishell *ms)
 	exit(ms->return_value);
 }
 
-//TODO normer cette fonction !
-void	check_exit(t_minishell *ms)
+void	check_exit(t_minishell *ms, int j)
 {
 	char **tab;
 	int i;
 
 	i = -1;
-	if (!(tab = ft_split(ms->line, ' ')))
+	ft_strdel_free(&(ms->line));
+	ms->line = ft_strdup("");
+	if (!(tab = ft_split(ms->command_tab[j], ' ')))
 		ft_exit(ms);
 	if (tab[0] != NULL && tab_len(tab) > 1)
 	{

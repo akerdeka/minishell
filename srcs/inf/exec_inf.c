@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:44:55 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/26 15:44:59 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/01/26 17:12:44 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ static void	try_exec(t_minishell *ms, int i)
 	}
 	else
 	{
+		wait(0);
 		try_exec_read(ms);
 	}
 }
@@ -119,7 +120,7 @@ void	get_different_option(t_minishell *ms, int i)
 	else if (ft_strcmp(ms->command, "cd") == 0)
 		ft_cd(ms, i);
 	else if (ft_strcmp(ms->command, "exit") == 0)
-		check_exit(ms);
+		check_exit(ms, i);
 	else if (ft_strcmp(ms->command, "export") == 0)
 		ft_export(ms);
 	else if (ft_strcmp(ms->command, "unset") == 0)

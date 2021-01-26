@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:32:27 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/26 15:24:05 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/01/26 17:09:49 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	get_path_arg_pipe(t_minishell *ms, int k)
 static void	try_exec_pipe(t_minishell *ms, int k)
 {
 	int		id;
-
 	get_path_arg_pipe(ms, k);
 	id = fork();
 	if (id == 0)

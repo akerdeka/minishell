@@ -78,7 +78,7 @@ static void		main_manager(t_minishell *ms, int i)
 	ft_strchr(ms->command_tab[i], -52)
 	|| ft_strchr(ms->command_tab[i], -53))
 	{
-		free(ms->line);
+		ft_strdel_free(&(ms->line));
 		ms->line = ft_strdup("");
 		manage_inf(ms, i);
 		ft_printf("%s", ms->line);
@@ -92,6 +92,15 @@ static void		main_manager(t_minishell *ms, int i)
 	}
 }
 
+void   	signal_handler(int signum)
+{
+	//ft_printf("\nsignum : %d\n", signum);
+	if (signum == 2)
+		ft_printf("\n\033[0;31mMinishell > \033[00m");
+	if (signum == 3)
+		ft_printf("Quit: 3\n\033[0;31mMinishell > \033[00m");
+}
+
 int				main(int argc __attribute__((unused)),
 		char **argv __attribute__((unused)), char **envp)
 {
@@ -101,24 +110,12 @@ int				main(int argc __attribute__((unused)),
 	i = 0;
 	ms->envp = envp;
 	ft_init(ms);
-	/*------------------*/
-	//signal(SIGINT, signal_handler);		//ctrl+c
-	//signal(SIGQUIT, signal_handler);	//ctrl+d
-	//ft_printf("\n\033[0;31mprompt>\033[00m");
-	//while (get_next_line(0, &ms->line) != 0)
-	//void   	signal_handler(int signum)
-	//{
-	//	ft_printf("\nsignum : %d\n", signum);
-	//	if (signum == 2)
-	//		ft_printf("\n\033[0;31mprompt>\033[00m");
-	//	if (signum == 3)
-	//		ft_printf("Quit: 3\n\033[0;31mprompt>\033[00m");
-	//}
-	/*--------------------*/
-	while (1)
+	signal(SIGINT, signal_handler);		//ctrl+c
+	signal(SIGQUIT, signal_handler);	//ctrl+d
+	ft_printf("\033[0;31mMinishell > \033[00m");
+	while (get_next_line(0, &ms->line) != 0)
 	{
-		ft_printf("Minishell > ");
-		get_next_line(0, &ms->line);
+		//get_next_line(0, &ms->line);
 		ft_testing(ms);
 		//ft_error(ms);
 		while (ms->command_tab[i])
@@ -135,6 +132,7 @@ int				main(int argc __attribute__((unused)),
 		//ft_strdel(ms->command_tab[i]);
 		//ft_memdel((void **)ms->command_tab);
 		i = 0;
+		ft_printf("\033[0;31mMinishell > \033[00m");
 	}
 	ft_exit(ms);
 	return (1);
