@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:32:27 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/25 14:17:01 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/01/26 15:24:05 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	get_path_arg_pipe(t_minishell *ms, int k)
 	ms->argv[0] = tempo;
 }
 
+#include "stdio.h"
 static void	try_exec_pipe(t_minishell *ms, int k)
 {
 	int		id;
@@ -48,7 +49,12 @@ static void	try_exec_pipe(t_minishell *ms, int k)
 	get_path_arg_pipe(ms, k);
 	id = fork();
 	if (id == 0)
-		execve(ms->argv[0], ms->argv, NULL);
+	{
+		execve(ms->argv[0], ms->argv, ms->envp);
+		dprintf(2, "%s\n", strerror(errno));
+		exit(1);
+	}
+	wait(0);
 }
 
 static int	get_command_pipe(t_minishell *ms, int k)
@@ -78,7 +84,7 @@ void	get_different_option_pipe(t_minishell *ms, int i)
 	if (!(get_command_pipe(ms, i)))
 		ft_exit(ms);
 	if (ft_strcmp(ms->command, "echo") == 0)
-		get_echo(ms, i);
+		get_echo_pipe(ms, i);
 	else if (ft_strcmp(ms->command, "cd") == 0)
 		ft_printf("");
 	else if (ft_strcmp(ms->command, "exit") == 0)

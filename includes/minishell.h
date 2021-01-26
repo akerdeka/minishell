@@ -3,6 +3,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <string.h>
+
 typedef struct      env_var //liste chaînée pour variable d'environnement 
 {
     char    *var;
@@ -69,3 +71,12 @@ void	ischaracter_slash(t_minishell *ms, int i);
 void	ischaracter_slash_next(t_minishell *ms, int i);
 void	ft_testing(t_minishell *ms);
 void	ft_strdel_free(char **str);
+
+
+void	manage_command_55(t_minishell *ms, int i, int **fd);
+
+int		get_echo_pipe(t_minishell *ms, int i);
+int		get_echo_inf(t_minishell *ms, int i);
+
+void    ft_error(t_minishell *ms);
+void    ft_error_ls(t_minishell *ms);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_inf.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasayad <wasayad@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:21:36 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/23 16:52:01 by wasayad          ###   ########lyon.fr   */
+/*   Updated: 2021/01/26 16:23:36 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	manage_command_51(t_minishell *ms, int i, int j, int k)
 	free(ms->line);
 	ms->line = ms->command_inf[0];
 	get_different_option_pipe_inf(ms, i);
+	ms->command_inf[1] = ft_strtrim_free(ms->command_inf[1], " ");
 	while (ms->command_inf[j])
 	{
 		k = 0;
@@ -32,13 +33,21 @@ void	manage_command_51(t_minishell *ms, int i, int j, int k)
 		j++;
 	}
 }
-
-void	manage_command_52(t_minishell *ms, int i)
+void	manage_command_55(t_minishell *ms, int i, int **fd)
 {
+	int		fdi;
+	int		tempstdin;
+
 	if (!(ms->command_inf = ft_split(ms->command_pipe[i], -52)))
 		ft_exit(ms);
-	free(ms->line);
-	ms->line = ms->command_inf[0];
+	ms->command_inf[1] = ft_strtrim_free(ms->command_inf[1], " ");
+	fdi = open(ms->command_inf[1], O_RDONLY);
+	tempstdin = dup(0);
+	dup2(fdi, STDIN_FILENO);
+	dup2(fd[i][1], STDOUT_FILENO);
+	get_different_option_pipe_inf(ms, i);
+	dup2(tempstdin, STDIN_FILENO);
+	close(fdi);
 }
 
 void	manage_command_53(t_minishell *ms, int i, int j, int k)
@@ -74,10 +83,6 @@ void	manage_inf_pipe(t_minishell *ms, int i)
 	if (ft_strchr(ms->command_pipe[i], -51))
 	{
 		manage_command_51(ms, i, j, k);
-	}
-	else if (ft_strchr(ms->command_pipe[i], -52))
-	{
-		manage_command_52(ms, i);
 	}
 	else if (ft_strchr(ms->command_pipe[i], -53))
 	{

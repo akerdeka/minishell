@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:44:55 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/25 14:51:01 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/01/26 15:44:59 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int			get_command(t_minishell *ms, int i)
 	return (1);
 }
 
-void	get_path_arg(t_minishell *ms)
+void	get_path_arg(t_minishell *ms, int j)
 {
 	t_env_var	*temp;
 	char		**path;
@@ -57,9 +57,9 @@ void	get_path_arg(t_minishell *ms)
 		close(id);
 		free(tempo);
 	}
-	ms->line = ft_strjoin_free_s2(" ", ms->line);
-	ms->line = ft_strjoin_free_s2(ms->command, ms->line);
-	ms->argv = ft_split(ms->line, ' ');
+	ms->command_tab[j] = ft_strjoin_free_s2(" ", ms->command_tab[j]);
+	ms->command_tab[j] = ft_strjoin_free_s2(ms->command, ms->command_tab[j]);
+	ms->argv = ft_split(ms->command_tab[j], ' ');
 	free(ms->argv[0]);
 	ms->argv[0] = ft_strdup(tempo);
 	free(tempo);
@@ -83,13 +83,13 @@ static void	try_exec_read(t_minishell *ms)
 	free(buffer);
 }
 
-static void	try_exec(t_minishell *ms)
+static void	try_exec(t_minishell *ms, int i)
 {
 	int		id;
 
 	ft_strdel_free(&(ms->line));
 	ms->line = ft_strdup("");
-	get_path_arg(ms);
+	get_path_arg(ms, i);
 	pipe(ms->pfd);
 	id = fork();
 	if (id == 0)
@@ -98,6 +98,7 @@ static void	try_exec(t_minishell *ms)
 		dup2(ms->pfd[1], 1);
 		if (execve(ms->argv[0], ms->argv, ms->envp) == -1)
 		{
+			dprintf(2, "%s\n", strerror(errno));
 			exit(1);
 		}
 	}
@@ -126,5 +127,5 @@ void	get_different_option(t_minishell *ms, int i)
 	else if (ft_strcmp(ms->command, "env") == 0)
 		ft_env(ms);
 	else
-		try_exec(ms);
+		try_exec(ms, i);
 }

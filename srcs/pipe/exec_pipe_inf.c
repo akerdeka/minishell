@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:39:13 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/25 14:16:43 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/01/26 16:25:52 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,29 @@ void	get_path_arg_pipe_inf(t_minishell *ms)
 	ms->argv[0] = tempo;
 }
 
-void	try_exec_pipe_inf_read(t_minishell *ms)
+void	try_exec_pipe_inf_read(t_minishell *ms, int i)
 {
 	int		ret;
 	char	*buffer;
 
-	buffer = malloc(sizeof(char *) * 10000);
-	free(ms->line);
-	ms->line = ft_strdup("");
-	close(ms->pfd[1]);
-	while (((ret = read(ms->pfd[0], buffer, 1023)) > 0))
+	if (!(ft_strchr(ms->command_pipe[i], -52)))
 	{
-		buffer[ret] = 0;
-		ms->line = ft_strjoin_free_s1(ms->line, buffer);
+		buffer = malloc(sizeof(char *) * 10000);
+		free(ms->line);
+		ms->line = ft_strdup("");
+		close(ms->pfd[1]);
+		while (((ret = read(ms->pfd[0], buffer, 1023)) > 0))
+		{
+			buffer[ret] = 0;
+			ms->line = ft_strjoin_free_s1(ms->line, buffer);
+		}
+		close(ms->pfd[0]);
+		free(buffer);
 	}
-	close(ms->pfd[0]);
-	free(buffer);
 }
 
-void	try_exec_pipe_inf(t_minishell *ms)
+#include "stdio.h"
+void	try_exec_pipe_inf(t_minishell *ms, int i)
 {
 	int		id;
 
@@ -92,11 +96,17 @@ void	try_exec_pipe_inf(t_minishell *ms)
 	if (id == 0)
 	{
 		close(ms->pfd[0]);
-		dup2(ms->pfd[1], 1);
-		execve(ms->argv[0], ms->argv, NULL);
+		if (!(ft_strchr(ms->command_pipe[i], -52)))
+			dup2(ms->pfd[1], 1);
+		execve(ms->argv[0], ms->argv, ms->envp);
+		dprintf(2, "%s\n", strerror(errno));
+		exit(1);
 	}
 	else
-		try_exec_pipe_inf_read(ms);
+	{
+		wait(0);
+		try_exec_pipe_inf_read(ms, i);
+	}
 }
 
 void	get_different_option_pipe_inf(t_minishell *ms, int i)
@@ -104,7 +114,7 @@ void	get_different_option_pipe_inf(t_minishell *ms, int i)
 	if (!(get_command_pipe_inf(ms, i)))
 		ft_exit(ms);
 	if (ft_strcmp(ms->command, "echo") == 0)
-		get_echo(ms, i);
+		get_echo_inf(ms, i);
 	else if (ft_strcmp(ms->command, "pwd") == 0)
 		ft_pwd(ms);
 	else if (ft_strcmp(ms->command, "cd") == 0)
@@ -118,5 +128,5 @@ void	get_different_option_pipe_inf(t_minishell *ms, int i)
 	else if (ft_strcmp(ms->command, "env") == 0)
 		ft_env(ms);
 	else
-		try_exec_pipe_inf(ms);
+		try_exec_pipe_inf(ms, i);
 }

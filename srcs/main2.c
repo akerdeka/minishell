@@ -81,7 +81,7 @@ static void		main_manager(t_minishell *ms, int i)
 		free(ms->line);
 		ms->line = ft_strdup("");
 		manage_inf(ms, i);
-		ft_printf("%s\n", ms->line);
+		ft_printf("%s", ms->line);
 	}
 	else
 	{
@@ -101,11 +101,26 @@ int				main(int argc __attribute__((unused)),
 	i = 0;
 	ms->envp = envp;
 	ft_init(ms);
+	/*------------------*/
+	//signal(SIGINT, signal_handler);		//ctrl+c
+	//signal(SIGQUIT, signal_handler);	//ctrl+d
+	//ft_printf("\n\033[0;31mprompt>\033[00m");
+	//while (get_next_line(0, &ms->line) != 0)
+	//void   	signal_handler(int signum)
+	//{
+	//	ft_printf("\nsignum : %d\n", signum);
+	//	if (signum == 2)
+	//		ft_printf("\n\033[0;31mprompt>\033[00m");
+	//	if (signum == 3)
+	//		ft_printf("Quit: 3\n\033[0;31mprompt>\033[00m");
+	//}
+	/*--------------------*/
 	while (1)
 	{
 		ft_printf("Minishell > ");
 		get_next_line(0, &ms->line);
 		ft_testing(ms);
+		//ft_error(ms);
 		while (ms->command_tab[i])
 		{
 			int j = 0;
