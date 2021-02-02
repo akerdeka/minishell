@@ -6,7 +6,7 @@
 #    By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/14 14:02:44 by pbesson           #+#    #+#              #
-#    Updated: 2021/01/26 15:37:08 by akerdeka         ###   ########lyon.fr    #
+#    Updated: 2021/02/02 14:59:11 by akerdeka         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ SRC =	srcs/main2.c\
 		srcs/pipe/pipe_inf.c\
 		srcs/pipe/exec_pipe.c\
 		srcs/inf/inf.c\
-		srcs/inf/exec_inf.c
+		srcs/inf/exec_inf.c\
+		srcs/signal.c
 		
 
 LIBFT_PATH = ./libft

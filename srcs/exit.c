@@ -1,6 +1,7 @@
+
 #include "../includes/minishell.h"
 
-static void free_tab(char **tab)
+static void	free_tab(char **tab)
 {
 	int i;
 
@@ -12,7 +13,7 @@ static void free_tab(char **tab)
 	free(tab);
 }
 
-static int tab_len(char **tab)
+static int	tab_len(char **tab)
 {
 	int i;
 
@@ -22,7 +23,7 @@ static int tab_len(char **tab)
 	return (i);
 }
 
-void	ft_exit(t_minishell *ms)
+void		ft_exit(t_minishell *ms)
 {
 	ft_strdel(ms->command);
 	ft_strdel(ms->line);
@@ -30,10 +31,10 @@ void	ft_exit(t_minishell *ms)
 	exit(ms->return_value);
 }
 
-void	check_exit(t_minishell *ms, int j)
+void		check_exit(t_minishell *ms, int j)
 {
-	char **tab;
-	int i;
+	char	**tab;
+	int		i;
 
 	i = -1;
 	ft_strdel_free(&(ms->line));
@@ -52,7 +53,7 @@ void	check_exit(t_minishell *ms, int j)
 				if (!(ft_isdigit(tab[0][i])))
 				{
 					ft_printf("Error : Wrong argument\n");
-					break;
+					break ;
 				}
 		if (tab[0] != NULL && tab[0][i] == '\0')
 		{

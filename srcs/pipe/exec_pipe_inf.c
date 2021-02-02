@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:39:13 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/26 16:25:52 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/02 14:48:16 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,26 @@ void	get_path_arg_pipe_inf(t_minishell *ms)
 	int			id;
 
 	i = -1;
-	temp = ms->ev;
-	while (temp->last != 1 && ft_strcmp(temp->var, "PATH") != 0)
-		temp = temp->next_var;
-	path = ft_split(temp->content, ':');
-	while (path[++i])
+	temp = ms->ev->next_var;
+	if (ms->command[0] == '/')
 	{
-		tempo = ft_strjoin(path[i], "/");
-		tempo = ft_strjoin_free_s1(tempo, ms->command);
-		id = open(tempo, O_RDONLY);
-		if (id > 0)
-			break ;
-		close(id);
-		free(tempo);
+		tempo = ft_strdup(ms->command);
+	}
+	else
+	{
+		while (temp->next_var && ft_strcmp(temp->var, "PATH") != 0)
+			temp = temp->next_var;
+		path = ft_split(temp->content, ':');
+		while (path[++i])
+		{
+			tempo = ft_strjoin(path[i], "/");
+			tempo = ft_strjoin_free_s1(tempo, ms->command);
+			id = open(tempo, O_RDONLY);
+			if (id > 0)
+				break ;
+			close(id);
+			free(tempo);
+		}
 	}
 	ms->command_inf[0] = ft_strjoin_free_s2(" ", ms->command_inf[0]);
 	ms->command_inf[0] = ft_strjoin_free_s2(ms->command, ms->command_inf[0]);
@@ -104,6 +111,7 @@ void	try_exec_pipe_inf(t_minishell *ms, int i)
 	}
 	else
 	{
+		signal_handler(id);			// get id for signal_handler
 		wait(0);
 		try_exec_pipe_inf_read(ms, i);
 	}
@@ -122,9 +130,9 @@ void	get_different_option_pipe_inf(t_minishell *ms, int i)
 	else if (ft_strcmp(ms->command, "exit") == 0)
 		ft_printf("");
 	else if (ft_strcmp(ms->command, "export") == 0)
-		ft_export(ms);
+		ft_export(ms, i);
 	else if (ft_strcmp(ms->command, "unset") == 0)
-		ft_unset(ms);
+		ft_unset(ms, i);
 	else if (ft_strcmp(ms->command, "env") == 0)
 		ft_env(ms);
 	else

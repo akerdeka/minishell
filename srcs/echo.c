@@ -5,16 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pbesson <pbesson@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/21 20:25:39 by pbesson           #+#    #+#             */
-/*   Updated: 2020/09/21 20:25:39 by pbesson          ###   ########lyon.fr   */
+/*   Created: 2021/02/01 12:40:30 by pbesson           #+#    #+#             */
+/*   Updated: 2021/02/01 12:40:33 by pbesson          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-//GERER LES EXIT
-//PARSING CASSE SUR LE CAS '"salut"' '"salut"'
 
-int		get_echo(t_minishell *ms, int i)
+int	get_echo(t_minishell *ms, int i)
 {
 	if (ms->command_tab[i][0] == '-' && ms->command_tab[i][1] == 'n')
 	{
@@ -30,7 +28,7 @@ int		get_echo(t_minishell *ms, int i)
 	return (1);
 }
 
-int		get_echo_pipe(t_minishell *ms, int i)
+int	get_echo_pipe(t_minishell *ms, int i)
 {
 	if (ms->command_pipe[i][0] == '-' && ms->command_pipe[i][1] == 'n')
 	{
@@ -46,7 +44,7 @@ int		get_echo_pipe(t_minishell *ms, int i)
 	return (1);
 }
 
-int		get_echo_inf(t_minishell *ms, int i)
+int	get_echo_inf(t_minishell *ms, int i)
 {
 	i = 0;
 	if (ms->command_inf[0][0] == '-' && ms->command_inf[0][1] == 'n')

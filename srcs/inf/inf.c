@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   inf.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: pbesson <pbesson@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:41:51 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/26 16:14:03 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/01 13:22:43 by pbesson          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "stdio.h"
+
 static void	manage_command_51(t_minishell *ms, int i, int j, int k)
 {
 	k = 0;
