@@ -6,11 +6,11 @@
 #    By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/14 14:02:44 by pbesson           #+#    #+#              #
-#    Updated: 2021/02/02 14:59:11 by akerdeka         ###   ########lyon.fr    #
+#    Updated: 2021/02/03 11:14:49 by akerdeka         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
-SRC =	srcs/main2.c\
+SRC =	main.c\
 		srcs/echo.c\
 		srcs/utils.c\
 		srcs/exit.c\
@@ -25,6 +25,7 @@ SRC =	srcs/main2.c\
 		srcs/pipe/pipe.c\
 		srcs/pipe/pipe_inf.c\
 		srcs/pipe/exec_pipe.c\
+		srcs/pipe/get_path_arg.c\
 		srcs/inf/inf.c\
 		srcs/inf/exec_inf.c\
 		srcs/signal.c

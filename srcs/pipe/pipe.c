@@ -6,12 +6,12 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:10:58 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/26 15:31:33 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/03 11:47:54 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include "stdio.h"
+
 static void	manage_dup_loop(t_minishell *ms, int **fd, int tempstdout, int j)
 {
 	int		tempstdin;
@@ -60,7 +60,7 @@ static void	manage_dup_loop(t_minishell *ms, int **fd, int tempstdout, int j)
 	dup2(tempstdin, 0);
 }
 
-void	manage_pipe(t_minishell *ms, int i)
+void		manage_pipe(t_minishell *ms, int i)
 {
 	int		j;
 	int		tempstdout;

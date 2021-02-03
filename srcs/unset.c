@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/03 10:29:32 by akerdeka          #+#    #+#             */
+/*   Updated: 2021/02/03 10:42:50 by akerdeka         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
-#include "stdio.h"
-static int		check_var_unset(t_minishell *ms, int j)
+
+static int	check_var_unset(t_minishell *ms, int j)
 {
 	int		i;
 
@@ -9,7 +21,8 @@ static int		check_var_unset(t_minishell *ms, int j)
 	ms->line = ft_strdup("");
 	while (ms->command_tab[j][i] && ms->command_tab[j][i] != ' ')
 	{
-		if (!(ft_isalnum(ms->command_tab[j][i])) && ms->command_tab[j][i] != '=' &&
+		if (!(ft_isalnum(ms->command_tab[j][i])) &&
+			ms->command_tab[j][i] != '=' &&
 			ms->command_tab[j][i] != '_' && ms->command_tab[j][i] != ' ')
 		{
 			ft_printf("wrong ID\n");
@@ -21,14 +34,52 @@ static int		check_var_unset(t_minishell *ms, int j)
 		ft_exit(ms);
 	return (1);
 }
-#include "stdio.h"
-void	ft_unset(t_minishell *ms, int i)
+
+int			ft_unset_check(t_minishell *ms, t_env_var *t, t_env_var *ts, int j)
+{
+	if (j == 0)
+	{
+		free(t->var);
+		free(t->content);
+		ms->ev->next_var = t->next_var;
+		ts = t->next_var;
+		ts->prev_var = ms->ev;
+	}
+	else
+	{
+		free(t->var);
+		free(t->content);
+		ts = t->next_var;
+		ts->prev_var = t->prev_var;
+		ts = t->prev_var;
+		ts->next_var = t->next_var;
+		free(t);
+		t = ts;
+		free(ms->command);
+		ms->command = ft_strdup("");
+		j = 1;
+	}
+	return (j);
+}
+
+void		ft_unset_change(t_env_var *temp, t_env_var *ts)
+{
+	free(temp->next_var);
+	free(temp->content);
+	ts = temp->prev_var;
+	ts->next_var = NULL;
+	free(temp);
+	temp = ts;
+}
+
+void		ft_unset(t_minishell *ms, int i)
 {
 	t_env_var	*temp;
 	t_env_var	*temp_swap;
-	int		j;
+	int			j;
 
 	j = 0;
+	temp_swap = NULL;
 	ms->command_tab[i] = ft_strtrim_free(ms->command_tab[i], " ");
 	if (check_var_unset(ms, i))
 	{
@@ -37,28 +88,7 @@ void	ft_unset(t_minishell *ms, int i)
 		{
 			if (ft_strcmp(temp->var, ms->command_tab[i]) == 0)
 			{
-				if (j == 0)
-				{
-					free(temp->var);
-					free(temp->content);
-					ms->ev->next_var = temp->next_var;
-					temp_swap = temp->next_var;
-					temp_swap->prev_var = ms->ev;
-				}
-				else
-				{
-					free(temp->var);
-					free(temp->content);
-					temp_swap = temp->next_var;
-					temp_swap->prev_var = temp->prev_var;
-					temp_swap = temp->prev_var;
-					temp_swap->next_var = temp->next_var;
-					free(temp);
-					temp = temp_swap;
-					free(ms->command);
-					ms->command = ft_strdup("");
-					j = 1;
-				}
+				j = ft_unset_check(ms, temp, temp_swap, j);
 				break ;
 			}
 			j++;
@@ -66,12 +96,7 @@ void	ft_unset(t_minishell *ms, int i)
 		}
 		if (j != 1 && ft_strcmp(temp->var, ms->command) == 0)
 		{
-			free(temp->next_var);
-			free(temp->content);
-			temp_swap = temp->prev_var;
-			temp_swap->next_var = NULL;
-			free(temp);
-			temp = temp_swap;
+			ft_unset_change(temp, temp_swap);
 		}
 	}
 }

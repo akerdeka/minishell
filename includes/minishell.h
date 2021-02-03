@@ -62,6 +62,7 @@ void		get_different_option(t_minishell *ms, int i);
 void		get_different_option_pipe(t_minishell *ms, int i);
 void		get_different_option_pipe_inf(t_minishell *ms, int i);
 int			get_command_pipe_inf(t_minishell *ms, int k);
+char		**gpapin(t_minishell *ms, t_env_var *t, char **path, char *tempo, int i);
 
 int			ischaracter_quotes(t_minishell *ms, int i);
 int			ischaracter_squotes(t_minishell *ms, int i);

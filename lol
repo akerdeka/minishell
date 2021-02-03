@@ -10,7 +10,7 @@
 /*                                                                          */
 /****************************************************************************/
 
-#include "../includes/minishell.h"
+#include "includes/minishell.h"
 
 static int	ft_find_equal(char *envp)
 {

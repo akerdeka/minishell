@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:39:13 by wasayad           #+#    #+#             */
-/*   Updated: 2021/02/02 14:48:16 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/03 11:18:39 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,16 @@ void	get_path_arg_pipe_inf(t_minishell *ms)
 	char		**path;
 	int			i;
 	char		*tempo;
-	int			id;
 
 	i = -1;
+	tempo = NULL;
+	path = NULL;
 	temp = ms->ev->next_var;
 	if (ms->command[0] == '/')
-	{
 		tempo = ft_strdup(ms->command);
-	}
 	else
 	{
-		while (temp->next_var && ft_strcmp(temp->var, "PATH") != 0)
-			temp = temp->next_var;
-		path = ft_split(temp->content, ':');
-		while (path[++i])
-		{
-			tempo = ft_strjoin(path[i], "/");
-			tempo = ft_strjoin_free_s1(tempo, ms->command);
-			id = open(tempo, O_RDONLY);
-			if (id > 0)
-				break ;
-			close(id);
-			free(tempo);
-		}
+		path = gpapin(ms, temp, path, tempo, i);
 	}
 	ms->command_inf[0] = ft_strjoin_free_s2(" ", ms->command_inf[0]);
 	ms->command_inf[0] = ft_strjoin_free_s2(ms->command, ms->command_inf[0]);
@@ -92,7 +79,6 @@ void	try_exec_pipe_inf_read(t_minishell *ms, int i)
 	}
 }
 
-#include "stdio.h"
 void	try_exec_pipe_inf(t_minishell *ms, int i)
 {
 	int		id;
@@ -106,12 +92,12 @@ void	try_exec_pipe_inf(t_minishell *ms, int i)
 		if (!(ft_strchr(ms->command_pipe[i], -52)))
 			dup2(ms->pfd[1], 1);
 		execve(ms->argv[0], ms->argv, ms->envp);
-		dprintf(2, "%s\n", strerror(errno));
+		ft_printf("%s\n", strerror(errno));
 		exit(1);
 	}
 	else
 	{
-		signal_handler(id);			// get id for signal_handler
+		signal_handler(id);
 		wait(0);
 		try_exec_pipe_inf_read(ms, i);
 	}

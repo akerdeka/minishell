@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:25:39 by pbesson           #+#    #+#             */
-/*   Updated: 2021/02/02 16:56:31 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/03 10:14:24 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	ft_strdel_free(char **str)
 
 void	str_remove_index(int i, t_minishell *ms)
 {
-	char	*str;
-	int		j;
-	int		k;
+	char		*str;
+	int			j;
+	int			k;
 
 	j = 0;
 	k = 0;
@@ -41,11 +41,11 @@ void	str_remove_index(int i, t_minishell *ms)
 	free(ms->line);
 	ms->line = str;
 }
-#include "stdio.h"
+
 void	get_environement(t_minishell *ms)
 {
-	t_env_var *temp;
-	int		i;
+	t_env_var	*temp;
+	int			i;
 
 	i = 0;
 	temp = ms->ev->next_var;
@@ -76,7 +76,7 @@ void	ft_add_shlvl(t_minishell *ms)
 	while (temp->next_var)
 	{
 		if ((ft_strcmp("SHLVL", temp->var)) == 0)
-			break;
+			break ;
 		temp = temp->next_var;
 	}
 	temp->content = ft_itoa(ft_atoi(temp->content) + 1);
