@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pbesson <pbesson@student.le-101.fr>        +#+  +:+       +#+        */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 13:42:01 by pbesson           #+#    #+#             */
-/*   Updated: 2020/03/12 18:27:17 by pbesson          ###   ########lyon.fr   */
+/*   Updated: 2021/02/05 10:32:37 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include "ft_printf/ft_printf.h"
-# define BUFFERSIZE = 1
+# define BUFFER_SIZE 32
 
 int			ft_atoi(const char *str);
 void		ft_bzero(void *b, size_t len);

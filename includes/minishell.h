@@ -7,6 +7,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 # include <string.h>
+# include <stdio.h>
 
 typedef struct		env_var
 {

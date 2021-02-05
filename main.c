@@ -25,7 +25,7 @@ static int	ft_find_equal(char *envp)
 	}
 	return (0);
 }
-#include "stdio.h"
+
 void		ft_init_env_var(t_minishell *ms)
 {
 	int			i;
@@ -36,11 +36,6 @@ void		ft_init_env_var(t_minishell *ms)
 	if (!(ms->ev = malloc(sizeof(t_env_var) * 1)))
 		ft_exit(ms);
 	ms->ev->var = NULL;
-	//ms->ev->var = ft_substr(ms->envp[i], 0, ft_find_equal(ms->envp[i]));
-	//ms->ev->content = ft_substr(ms->envp[i], ft_find_equal(ms->envp[i]) + 1, ft_strlen(ms->envp[i]) - ft_find_equal(ms->envp[i]));
-	//ms->ev->last = 0;
-	//ms->ev->first_var = NULL;
-	////ms->ev->first_var = ms->ev;
 	actual = ms->ev;
 	while (ms->envp[++i])
 	{
@@ -113,11 +108,8 @@ int			main(int argc __attribute__((unused)),
 				j++;
 			}
 			main_manager(ms, i);
-			//ft_strdel(ms->command_tab[i]);
 			i++;
 		}
-		//ft_strdel(ms->command_tab[i]);
-		//ft_memdel((void **)ms->command_tab);
 		i = 0;
 		ft_printf("\033[0;31mMinishell > \033[00m");
 	}

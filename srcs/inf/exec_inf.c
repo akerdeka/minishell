@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:44:55 by wasayad           #+#    #+#             */
-/*   Updated: 2021/02/03 11:46:07 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/05 10:30:34 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ void	get_different_option(t_minishell *ms, int i)
 	ms->line = ft_strdup("");
 	if (!(get_command(ms, i)))
 		ft_exit(ms);
+	dprintf(1, "DEBUG:\tcmd:\t|%s|\n", ms->command);
 	if (ft_strcmp(ms->command, "echo") == 0)
 		get_echo(ms, i);
 	else if (ft_strcmp(ms->command, "pwd") == 0)

@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:41:51 by wasayad           #+#    #+#             */
-/*   Updated: 2021/02/03 13:14:48 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/04 12:00:42 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	manage_command_51(t_minishell *ms, int i, int j, int k)
 	if (!(ms->command_inf = ft_split(ms->command_tab[i], -51)))
 		ft_exit(ms);
 	free(ms->command_tab[i]);
+	dprintf(2, "%s\n", ms->command_inf[2]);
 	ms->command_tab[i] = ft_strdup(ms->command_inf[0]);
 	ms->command_tab[i] = ft_strtrim_free(ms->command_tab[i], " ");
 	while (ms->command_inf[++j])
@@ -87,6 +88,7 @@ void	manage_inf(t_minishell *ms, int i)
 
 	j = 1;
 	k = 0;
+	//dprintf(2, "%s\n", ms->command_tab[i]);
 	if (ft_strchr(ms->command_tab[i], -51))
 	{
 		manage_command_51(ms, i, j, k);

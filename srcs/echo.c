@@ -6,12 +6,12 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 12:40:30 by pbesson           #+#    #+#             */
-/*   Updated: 2021/02/03 12:46:07 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/04 11:48:39 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
+#include <stdio.h>
 int	get_echo(t_minishell *ms, int i)
 {
 	if (ms->command_tab[i][0] == '-' && ms->command_tab[i][1] == 'n')
@@ -37,6 +37,7 @@ int	get_echo_pipe(t_minishell *ms, int i)
 	}
 	else
 	{
+		ms->command_pipe[i] = ft_strtrim_free(ms->command_pipe[i], " ");
 		ft_printf("%s\n", ms->command_pipe[i]);
 		ft_strdel_free(&(ms->line));
 		ms->line = ft_strjoin_free_s1(ms->command_pipe[i], "\n");

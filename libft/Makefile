@@ -1,15 +1,15 @@
 # **************************************************************************** #
-#                                                           LE - /             #
-#                                                               /              #
-#    Makefile                                         .::    .:/ .      .::    #
-#                                                  +:+:+   +:    +:  +:+:+     #
-#    By: pbesson <pbesson@student.le-101.fr>        +:+   +:    +:    +:+      #
-#                                                  #+#   #+    #+    #+#       #
-#    Created: 2019/10/14 14:02:44 by pbesson      #+#   ##    ##    #+#        #
-#    Updated: 2020/01/08 17:25:07 by pbesson     ###    #+. /#+    ###.fr      #
-#                                                          /                   #
-#                                                         /                    #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/10/14 14:02:44 by pbesson           #+#    #+#              #
+#    Updated: 2021/02/05 10:34:43 by akerdeka         ###   ########lyon.fr    #
+#                                                                              #
 # **************************************************************************** #
+
 
 SRC = 		ft_conversion/ft_atoi.c\
 			ft_mem/ft_bzero.c\
@@ -80,7 +80,7 @@ HEADERS = ft_printf/ft_printf.h
 OBJ = ${SRC:.c=.o}
 NAME = libft.a
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(BUFFER_SIZE) -g3
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 RM = rm
 $(NAME) :	$(OBJ) $(HEADERS)
 				@ar rc $(NAME) $(OBJ) 

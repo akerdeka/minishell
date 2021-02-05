@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 17:20:08 by akerdeka          #+#    #+#             */
-/*   Updated: 2021/01/25 14:12:44 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/04 13:29:54 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ int			ft_cd(t_minishell *ms, int j)
 {
 	int		i;
 	char	*str;
+	t_env_var *temp;
 
 	i = -1;
 	if (!(str = malloc(sizeof(char*) * (ft_strlen(ms->command_tab[j]) + 1))))
 		ft_exit(ms);
+	str[0] = '\0';
 	while (ms->command_tab[j][++i])
 	{
 		while (ms->command_tab[j][i] == ' ')
@@ -48,6 +50,19 @@ int			ft_cd(t_minishell *ms, int j)
 			i++;
 		}
 		str[i] = ms->command_tab[j][i];
+	}
+	temp = ms->ev->next_var;
+	if (str[0] == '\0')
+	{
+		while (temp->next_var)
+		{
+			if (ft_strcmp(temp->var, "HOME") == 0)
+				break ;
+			temp = temp->next_var;
+		}
+		chdir(temp->content);
+		ft_cd_errors(ms);
+		return (0);
 	}
 	str[i] = '\0';
 	chdir(str);

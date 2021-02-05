@@ -6,7 +6,7 @@
 #    By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/14 14:02:44 by pbesson           #+#    #+#              #
-#    Updated: 2021/02/03 11:14:49 by akerdeka         ###   ########lyon.fr    #
+#    Updated: 2021/02/05 10:29:45 by akerdeka         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ HEADERS = includes/minishell.h
 OBJ = $(SRC:.c=.o) libft/libft.a
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g3 #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 SANITIZE = -Wall -Wextra -Werror
 RM = rm -f
 

@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:25:39 by pbesson           #+#    #+#             */
-/*   Updated: 2021/02/03 10:14:24 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/05 10:26:26 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	get_environement(t_minishell *ms)
 		temp = temp->next_var;
 		i++;
 	}
-	ms->envps = malloc(sizeof(char **) * i + 1);
-	ms->envps[i + 1] = NULL;
+	ms->envps = malloc(sizeof(char **) * (i + 1));
+	ms->envps[i] = NULL;
 	temp = ms->ev->next_var;
 	i = 0;
 	while (temp->next_var)
