@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_inf.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: wasayad <wasayad@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:21:36 by wasayad           #+#    #+#             */
-/*   Updated: 2021/01/26 16:23:36 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/08 17:02:55 by wasayad          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,15 @@ void	manage_command_51(t_minishell *ms, int i, int j, int k)
 {
 	if (!(ms->command_inf = ft_split(ms->command_pipe[i], -51)))
 		ft_exit(ms);
-	free(ms->line);
-	ms->line = ms->command_inf[0];
+	ft_strdel_free(&(ms->line));
+	ms->line = ft_strdup(ms->command_inf[0]);
 	get_different_option_pipe_inf(ms, i);
 	ms->command_inf[1] = ft_strtrim_free(ms->command_inf[1], " ");
 	while (ms->command_inf[j])
 	{
 		k = 0;
-		while (ms->command_inf[j][i] && ms->command_inf[j][k] == ' ')
-			k++;
-		ms->fd = open(ms->command_inf[j] + k, O_WRONLY | O_CREAT | O_TRUNC,
+		ms->command_inf[j] = ft_strtrim_free(ms->command_inf[j], " ");
+		ms->fd = open(ms->command_inf[j], O_WRONLY | O_CREAT | O_TRUNC,
 		S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
 		if (ms->command_inf[j + 1] == NULL)
 			write(ms->fd, ms->line, ft_strlen(ms->line));
@@ -33,6 +32,7 @@ void	manage_command_51(t_minishell *ms, int i, int j, int k)
 		j++;
 	}
 }
+
 void	manage_command_55(t_minishell *ms, int i, int **fd)
 {
 	int		fdi;
@@ -54,14 +54,13 @@ void	manage_command_53(t_minishell *ms, int i, int j, int k)
 {
 	if (!(ms->command_inf = ft_split(ms->command_pipe[i], -53)))
 		ft_exit(ms);
-	free(ms->line);
-	ms->line = ms->command_inf[0];
+	ft_strdel_free(&(ms->line));
+	ms->line = ft_strdup(ms->command_inf[0]);
 	get_different_option_pipe_inf(ms, i);
 	while (ms->command_inf[j])
 	{
 		k = 0;
-		while (ms->command_inf[j][i] && ms->command_inf[j][k] == ' ')
-			k++;
+		ms->command_inf[j] = ft_strtrim_free(ms->command_inf[j], " ");
 		ms->fd = open(ms->command_inf[j] + k, O_WRONLY | O_CREAT | O_APPEND,
 		S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH);
 		if (ms->command_inf[j + 1] == NULL)
@@ -88,13 +87,8 @@ void	manage_inf_pipe(t_minishell *ms, int i)
 	{
 		manage_command_53(ms, i, j, k);
 	}
-	ft_strdel(ms->line);
+	ft_strdel_free(&(ms->line));
 	j = 0;
-	// while (ms->command_inf[j])
-	// {
-	// 	ft_strdel(ms->command_inf[j]);
-	// }
-	// ft_strdel(ms->command_inf[j]);
-	// ft_memdel((void **)ms->command_inf);
-	//FREE COMMAND INF
+	while (ms->command_inf[j])
+		free(ms->command_inf[j++]);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: acharras <acharras@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/29 17:20:08 by akerdeka          #+#    #+#             */
-/*   Updated: 2021/02/04 13:29:54 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/09 14:13:50 by acharras         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,30 +27,8 @@ static void	ft_cd_errors(t_minishell *ms)
 	ms->line = ft_strdup("");
 }
 
-int			ft_cd(t_minishell *ms, int j)
+int			ft_cd_norme(t_minishell *ms, int i, t_env_var *temp, char *str)
 {
-	int		i;
-	char	*str;
-	t_env_var *temp;
-
-	i = -1;
-	if (!(str = malloc(sizeof(char*) * (ft_strlen(ms->command_tab[j]) + 1))))
-		ft_exit(ms);
-	str[0] = '\0';
-	while (ms->command_tab[j][++i])
-	{
-		while (ms->command_tab[j][i] == ' ')
-		{
-			if (ms->command_tab[j][i + 1] != ' ' && ms->command_tab[j][i + 1] != '\0')
-			{
-				ft_printf("Too much arguments.\n");
-				free(str);
-				return (0);
-			}
-			i++;
-		}
-		str[i] = ms->command_tab[j][i];
-	}
 	temp = ms->ev->next_var;
 	if (str[0] == '\0')
 	{
@@ -66,7 +44,34 @@ int			ft_cd(t_minishell *ms, int j)
 	}
 	str[i] = '\0';
 	chdir(str);
-	free(str);
 	ft_cd_errors(ms);
+	free(str);
+	return (1);
+}
+
+int			ft_cd(t_minishell *ms, int j)
+{
+	int			i;
+	char		*str;
+	t_env_var	*temp;
+
+	i = -1;
+	temp = NULL;
+	if (!(str = malloc(sizeof(char*) * (ft_strlen(ms->command_tab[j]) + 1))))
+		ft_exit(ms);
+	str[0] = '\0';
+	while (ms->command_tab[j][++i])
+	{
+		while (ms->command_tab[j][i] == ' ')
+			if (ms->command_tab[j][i + 1] != ' ' &&
+					ms->command_tab[j][i++ + 1] != '\0')
+			{
+				ft_printf("Too much arguments.\n");
+				free(str);
+				return (0);
+			}
+		str[i] = ms->command_tab[j][i];
+	}
+	ft_cd_norme(ms, i, temp, str);
 	return (1);
 }

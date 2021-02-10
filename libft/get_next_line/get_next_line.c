@@ -3,106 +3,121 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasayad <wasayad@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: acharras <acharras@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/18 13:05:34 by pbesson           #+#    #+#             */
-/*   Updated: 2021/01/22 16:14:09 by wasayad          ###   ########lyon.fr   */
+/*   Created: 2019/11/08 10:59:39 by akerdeka          #+#    #+#             */
+/*   Updated: 2021/02/09 15:58:19 by acharras         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "get_next_line.h"
 
-int		ft_strlen_line(char *str)
+int		ft_read_norme(char *buff, char **str, char *temp)
 {
-	int i;
-
-	i = 0;
-	while (str[i] && str[i] != '\n')
-		i++;
-	return (i);
+	if (!(temp = ft_strdup(*str)))
+		return (-1);
+	free(*str);
+	if (!(*str = ft_strjoin(temp, buff)))
+		return (-1);
+	free(temp);
+	free(buff);
+	return (1);
 }
 
-char	*ft_read(int fd, char *str, int *ret)
+int		ft_read(int fd, char **str)
 {
-	char *buf;
+	int		ret;
+	char	*buff;
+	char	*temp;
 
-	if (!(buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-		return (NULL);
-	while ((*ret = read(fd, buf, BUFFER_SIZE)))
+	if (!(buff = malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+		return (-1);
+	while ((ret = read(fd, buff, BUFFER_SIZE)))
 	{
-		if (*ret < 0)
+		if (ret < 0)
+			return (-1);
+		buff[ret] = '\0';
+		if (ft_strchr(buff, '\n'))
 		{
-			ft_strdel(str);
-			ft_strdel(buf);
-			return (NULL);
+			if (ft_read_norme(buff, str, temp) == 1)
+				return (1);
+			return (-1);
 		}
-		buf[*ret] = '\0';
-		if (ft_strchr(buf, '\n'))
-		{
-			if (!(str = ft_strjoin(str, buf)))
-				return (NULL);
-			ft_strdel(buf);
-			return (str);
-		}
-		if (!(str = ft_strjoin(str, buf)))
-			return (NULL);
+		if (!(temp = ft_strdup(*str)))
+			return (-1);
+		free(*str);
+		if (!(*str = ft_strjoin(temp, buff)))
+			return (-1);
 	}
-	ft_strdel(buf);
-	return (str);
+	free(buff);
+	return (0);
+}
+
+int		ft_fill(int fd, char **str, char **line)
+{
+	int			ret;
+	char		*temp;
+
+	if ((ret = ft_read(fd, str)) == -1)
+		return (-1);
+	if (ret != 0)
+	{
+		if (!(*line = ft_substr(*str, 0, ft_strchr(*str, '\n') - *str)))
+			return (-1);
+		if (!(temp = ft_strdup(ft_strchr(*str, '\n') + 1)))
+			return (-1);
+		free(*str);
+		*str = temp;
+		return (1);
+	}
+	else
+	{
+		if (!(*line = ft_substr(*str, 0, ft_strchr(*str, '\0') - *str)))
+			return (-1);
+		free(*str);
+		*str = NULL;
+		return (0);
+	}
+}
+
+int		get_next_line_norme(char **str, char **line)
+{
+	char	*temp;
+
+	if (!(*line = ft_substr(*str, 0, ft_strchr(*str, '\n') - *str)))
+		return (-1);
+	if (!(temp = ft_strdup(ft_strchr(*str, '\n') + 1)))
+		return (-1);
+	free(*str);
+	*str = temp;
+	return (1);
 }
 
 int		get_next_line(int fd, char **line)
 {
-	static char	*storage = NULL;
-	char		*str;
+	static char	*str = NULL;
 	int			ret;
 
-	if (fd < 0 || line == NULL || BUFFER_SIZE < 1)
+	if (BUFFER_SIZE <= 0 || fd < 0 || !line)
 		return (-1);
-	if (!(str = ft_strdup("")))
-		return (-1);
-	if (storage != NULL && (ft_strchr(storage, '\n')))
-		return (ft_norme(&(*line), &str, &storage));
-	if (storage != NULL)
-	{
-		ft_strdel(str);
-		if (!(str = ft_read(fd, storage, &ret)))
+	if (str == NULL)
+		if (!(str = ft_strdup("")))
 			return (-1);
+	if (!(ft_strchr(str, '\n')))
+	{
+		if ((ret = ft_fill(fd, &str, line)) <= 0)
+		{
+			free(str);
+			return (ret == -1 ? -1 : 0);
+		}
+		return (1);
 	}
 	else
 	{
-		ft_strdel(str);
-		if (!(str = ft_read(fd, str, &ret)))
-			return (-1);
+		if (get_next_line_norme(&str, line) == 1)
+			return (1);
+		return (-1);
 	}
-	return (ft_norme_2(&ret, &(*line), &str, &storage));
-}
-
-int		ft_norme(char **line, char **str, char **storage)
-{
-	if (!(*line = ft_substr(*storage, 0, ft_strlen_line(*storage))))
-		return (-1);
-	ft_strdel(*str);
-	if (!(*str = ft_strdup(*storage)))
-		return (-1);
-	ft_strdel(*storage);
-	if (!(*storage = ft_strdup(ft_strchr(*str, '\n') + 1)))
-		return (-1);
-	ft_strdel(*str);
-	return (1);
-}
-
-int		ft_norme_2(int *ret, char **line, char **str, char **storage)
-{
-	if (*ret == 0)
-	{
-		if (!(*line = ft_strdup(*str)))
-			return (-1);
-		ft_strdel(*storage);
-		return (0);
-	}
-	if (!(*line = ft_substr(*str, 0, ft_strlen_line(*str))))
-		return (-1);
-	ft_strdel(*str);
-	return (1);
+	free(str);
+	return (0);
 }

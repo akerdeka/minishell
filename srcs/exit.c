@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acharras <acharras@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/09 14:07:40 by acharras          #+#    #+#             */
+/*   Updated: 2021/02/09 14:20:50 by acharras         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
@@ -31,6 +42,25 @@ void		ft_exit(t_minishell *ms)
 	exit(ms->return_value);
 }
 
+void		check_exit_norme(t_minishell *ms, char ***tab, int i)
+{
+	if (*tab[0] != NULL && tab_len(*tab) > 0)
+		while (*tab[0][++i])
+			if (!(ft_isdigit(*tab[0][i])))
+			{
+				ft_printf("Error : Wrong argument\n");
+				break ;
+			}
+	if (*tab[0] != NULL && *tab[0][i] == '\0')
+	{
+		ms->return_value = ft_atoi(*tab[0]);
+		free_tab(*tab);
+		ft_exit(ms);
+	}
+	else
+		ft_exit(ms);
+}
+
 void		check_exit(t_minishell *ms, int j)
 {
 	char	**tab;
@@ -48,20 +78,6 @@ void		check_exit(t_minishell *ms, int j)
 	}
 	else
 	{
-		if (tab[0] != NULL && tab_len(tab) > 0)
-			while (tab[0][++i])
-				if (!(ft_isdigit(tab[0][i])))
-				{
-					ft_printf("Error : Wrong argument\n");
-					break ;
-				}
-		if (tab[0] != NULL && tab[0][i] == '\0')
-		{
-			ms->return_value = ft_atoi(tab[0]);
-			free_tab(tab);
-			ft_exit(ms);
-		}
-		else
-			ft_exit(ms);
+		check_exit_norme(ms, &tab, i);
 	}
 }

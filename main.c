@@ -1,16 +1,16 @@
-/****************************************************************************/
-/*                                                                          */
-/*                                                       :::      ::::::::  */
-/*  main2.c                                            :+:      :+:    :+:  */
-/*                                                   +:+ +:+         +:+    */
-/*  By: wasayad <wasayad@student.42lyon.fr>        +#+  +:+       +#+       */
-/*                                               +#+#+#+#+#+   +#+          */
-/*  Created: 2021/01/22 15:59:28 by wasayad           #+#    #+#            */
-/*  Updated: 2021/01/22 15:59:28 by wasayad          ###   ########lyon.fr  */
-/*                                                                          */
-/****************************************************************************/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/10 10:20:35 by akerdeka          #+#    #+#             */
+/*   Updated: 2021/02/10 13:24:32 by akerdeka         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "./includes/minishell.h"
 
 static int	ft_find_equal(char *envp)
 {
@@ -42,15 +42,13 @@ void		ft_init_env_var(t_minishell *ms)
 		if (!(temp = malloc(sizeof(t_env_var) * 1)))
 			ft_exit(ms);
 		temp->var = ft_substr(ms->envp[i], 0, ft_find_equal(ms->envp[i]));
-		temp->content = ft_substr(ms->envp[i], ft_find_equal(ms->envp[i]) + 1, ft_strlen(ms->envp[i]) - ft_find_equal(ms->envp[i]));
+		temp->content = ft_substr(ms->envp[i], ft_find_equal(ms->envp[i]) + 1,
+			ft_strlen(ms->envp[i]) - ft_find_equal(ms->envp[i]));
 		actual->next_var = temp;
 		temp->prev_var = actual;
-		if (ms->envp[i + 1] == NULL)
-			actual->next_var = NULL;
-		else
-			actual = actual->next_var;
-
+		actual = actual->next_var;
 	}
+	actual->next_var = NULL;
 }
 
 void		ft_init(t_minishell *ms)
@@ -61,8 +59,11 @@ void		ft_init(t_minishell *ms)
 	ms->return_value = 0;
 	get_next_line(1, NULL);
 	ft_init_env_var(ms);
+	ms->command_pipe = NULL;
+	ms->command_inf = NULL;
 }
-static void	main_manager(t_minishell *ms, int i)
+
+void		main_manager(t_minishell *ms, int i)
 {
 	if (ft_strchr(ms->command_tab[i], -54))
 		manage_pipe(ms, i);
@@ -74,6 +75,7 @@ static void	main_manager(t_minishell *ms, int i)
 		ms->line = ft_strdup("");
 		manage_inf(ms, i);
 		ft_printf("%s", ms->line);
+		ft_strdel_free(&(ms->command));
 	}
 	else
 	{
@@ -84,12 +86,13 @@ static void	main_manager(t_minishell *ms, int i)
 	}
 }
 
-int			main(int argc __attribute__((unused)),
-		char **argv __attribute__((unused)), char **envp)
+int			main(int argc, char **argv, char **envp)
 {
 	t_minishell ms[1];
 	int			i;
 
+	argc = 2;
+	argv = NULL;
 	i = 0;
 	ms->envp = envp;
 	ft_init(ms);
@@ -98,21 +101,7 @@ int			main(int argc __attribute__((unused)),
 	signal(SIGQUIT, signal_handler);
 	ft_printf("\033[0;31mMinishell > \033[00m");
 	while (get_next_line(0, &ms->line) != 0)
-	{
-		ft_testing(ms);
-		while (ms->command_tab[i])
-		{
-			int j = 0;
-			while (ms->command_tab[j])
-			{
-				j++;
-			}
-			main_manager(ms, i);
-			i++;
-		}
-		i = 0;
-		ft_printf("\033[0;31mMinishell > \033[00m");
-	}
+		main_norm(ms, i);
 	ft_printf("exit\n");
 	ft_exit(ms);
 	return (1);

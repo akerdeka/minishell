@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: acharras <acharras@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 10:29:32 by akerdeka          #+#    #+#             */
-/*   Updated: 2021/02/03 10:42:50 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/09 14:39:54 by acharras         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	check_var_unset(t_minishell *ms, int j)
 		}
 		i++;
 	}
-	if (!(ms->command = ft_substr_free(ms->command_tab[j], 0, i)))
+	if (!(ms->command = ft_substr(ms->command_tab[j], 0, i)))
 		ft_exit(ms);
 	return (1);
 }
@@ -55,7 +55,7 @@ int			ft_unset_check(t_minishell *ms, t_env_var *t, t_env_var *ts, int j)
 		ts->next_var = t->next_var;
 		free(t);
 		t = ts;
-		free(ms->command);
+		ft_strdel_free(&(ms->command));
 		ms->command = ft_strdup("");
 		j = 1;
 	}

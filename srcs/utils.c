@@ -6,19 +6,19 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/21 20:25:39 by pbesson           #+#    #+#             */
-/*   Updated: 2021/02/05 10:26:26 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 13:26:28 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_strdel_free(char **str)
+void		ft_strdel_free(char **str)
 {
 	free(*str);
 	*str = NULL;
 }
 
-void	str_remove_index(int i, t_minishell *ms)
+void		str_remove_index(int i, t_minishell *ms)
 {
 	char		*str;
 	int			j;
@@ -42,7 +42,7 @@ void	str_remove_index(int i, t_minishell *ms)
 	ms->line = str;
 }
 
-void	get_environement(t_minishell *ms)
+void		get_environement(t_minishell *ms)
 {
 	t_env_var	*temp;
 	int			i;
@@ -68,16 +68,47 @@ void	get_environement(t_minishell *ms)
 	}
 }
 
-void	ft_add_shlvl(t_minishell *ms)
+void		ft_add_shlvl(t_minishell *ms)
 {
-	t_env_var *temp;
+	t_env_var	*temp;
+	char		*str;
 
 	temp = ms->ev->next_var;
-	while (temp->next_var)
+	if (temp)
 	{
-		if ((ft_strcmp("SHLVL", temp->var)) == 0)
-			break ;
-		temp = temp->next_var;
+		while (temp->next_var)
+		{
+			if ((ft_strcmp("SHLVL", temp->var)) == 0)
+				break ;
+			temp = temp->next_var;
+		}
+		str = ft_strdup(temp->content);
+		free(temp->content);
+		temp->content = ft_itoa(ft_atoi(str) + 1);
+		free(str);
 	}
-	temp->content = ft_itoa(ft_atoi(temp->content) + 1);
+	else
+		ft_add_env(ms);
+}
+
+int			get_command(t_minishell *ms, int i)
+{
+	int			j;
+	int			k;
+
+	k = 0;
+	j = 0;
+	while (ms->command_tab[i][k] && ms->command_tab[i][k] == ' ')
+		k++;
+	j = k;
+	while (ms->command_tab[i][j] && ms->command_tab[i][j] != ' ')
+		j++;
+	if (!(ms->command = ft_substr(ms->command_tab[i], k, j - k)))
+		return (0);
+	while (ms->command_tab[i][j] && ms->command_tab[i][j] == ' ')
+		j++;
+	if (!(ms->command_tab[i] = ft_substr_free(ms->command_tab[i], j,
+	ft_strlen(ms->command_tab[i]))))
+		return (0);
+	return (1);
 }

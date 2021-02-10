@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: wasayad <wasayad@student.42lyon.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:10:58 by wasayad           #+#    #+#             */
-/*   Updated: 2021/02/03 11:47:54 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/08 17:02:36 by wasayad          ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static void	manage_dup_loop_norme(t_minishell *ms,
+		int **fd, int tempstdout, int j)
+{
+	if (ft_strchr(ms->command_pipe[j], -52))
+	{
+		manage_command_55(ms, j, fd);
+	}
+	else if (j == 0 && ms->command_pipe[j + 1] != NULL)
+	{
+		dup2(fd[j][1], STDOUT_FILENO);
+		get_different_option_pipe(ms, j);
+	}
+	else if (ms->command_pipe[j + 1] != NULL)
+	{
+		close(fd[j - 1][1]);
+		dup2(fd[j - 1][0], STDIN_FILENO);
+		dup2(fd[j][1], STDOUT_FILENO);
+		get_different_option_pipe(ms, j);
+	}
+	else
+	{
+		dup2(tempstdout, STDOUT_FILENO);
+		close(fd[j - 1][1]);
+		dup2(fd[j - 1][0], STDIN_FILENO);
+		get_different_option_pipe(ms, j);
+	}
+}
 
 static void	manage_dup_loop(t_minishell *ms, int **fd, int tempstdout, int j)
 {
@@ -31,31 +59,9 @@ static void	manage_dup_loop(t_minishell *ms, int **fd, int tempstdout, int j)
 			manage_inf_pipe(ms, j);
 		}
 		else
-		{
-			if (ft_strchr(ms->command_pipe[j], -52))
-			{
-				manage_command_55(ms, j, fd);
-			}
-			else if (j == 0 && ms->command_pipe[j + 1] != NULL)
-			{
-				dup2(fd[j][1], STDOUT_FILENO);
-				get_different_option_pipe(ms, j);
-			}
-			else if (ms->command_pipe[j + 1] != NULL)
-			{
-				close(fd[j - 1][1]);
-				dup2(fd[j - 1][0], STDIN_FILENO);
-				dup2(fd[j][1], STDOUT_FILENO);
-				get_different_option_pipe(ms, j);
-			}
-			else
-			{
-				dup2(tempstdout, STDOUT_FILENO);
-				close(fd[j - 1][1]);
-				dup2(fd[j - 1][0], STDIN_FILENO);
-				get_different_option_pipe(ms, j);
-			}
-		}
+			manage_dup_loop_norme(ms, fd, tempstdout, j);
+		ft_strdel_free(&(ms->command));
+		free(ms->command_pipe[j]);
 	}
 	dup2(tempstdin, 0);
 }
@@ -83,4 +89,7 @@ void		manage_pipe(t_minishell *ms, int i)
 	}
 	j = -1;
 	manage_dup_loop(ms, fd, tempstdout, j);
+	while (++j < i)
+		free(fd[j]);
+	free(fd);
 }

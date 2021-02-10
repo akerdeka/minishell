@@ -6,13 +6,15 @@
 #    By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/14 14:02:44 by pbesson           #+#    #+#              #
-#    Updated: 2021/02/05 10:29:45 by akerdeka         ###   ########lyon.fr    #
+#    Updated: 2021/02/10 13:10:17 by akerdeka         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 SRC =	main.c\
+		srcs/main_norm.c\
 		srcs/echo.c\
 		srcs/utils.c\
+		srcs/utils_env.c\
 		srcs/exit.c\
 		srcs/pwd.c\
 		srcs/cd.c\
@@ -28,7 +30,8 @@ SRC =	main.c\
 		srcs/pipe/get_path_arg.c\
 		srcs/inf/inf.c\
 		srcs/inf/exec_inf.c\
-		srcs/signal.c
+		srcs/signal.c\
+		srcs/parsing_utils.c
 		
 
 LIBFT_PATH = ./libft
