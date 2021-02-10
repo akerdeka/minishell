@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 16:43:50 by acharras          #+#    #+#             */
-/*   Updated: 2021/02/10 13:36:37 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 15:30:48 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	main_norm(t_minishell *ms, int i)
 {
 	ft_testing(ms);
+	ft_add__(ms);
 	while (ms->command_tab[i])
 	{
 		main_manager(ms, i);

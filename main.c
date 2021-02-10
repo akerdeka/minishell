@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 10:20:35 by akerdeka          #+#    #+#             */
-/*   Updated: 2021/02/10 13:24:32 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 16:18:56 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void		ft_init_env_var(t_minishell *ms)
 	i = -1;
 	if (!(ms->ev = malloc(sizeof(t_env_var) * 1)))
 		ft_exit(ms);
-	ms->ev->var = NULL;
+	ms->ev->var = "?";
+	ms->ev->content = "0";
 	actual = ms->ev;
 	while (ms->envp[++i])
 	{

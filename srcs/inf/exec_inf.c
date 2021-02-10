@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_inf.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acharras <acharras@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 15:44:55 by wasayad           #+#    #+#             */
-/*   Updated: 2021/02/09 15:51:03 by acharras         ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 16:52:23 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ static void	try_exec_2(t_minishell *ms, int id, int j)
 		get_environement(ms);
 		if (execve(ms->argv[0], ms->argv, ms->envps) == -1)
 		{
+			if (ft_strcmp("?", ms->command) == 0)
+				ms->status = ft_strdup(ft_itoa(WEXITSTATUS(ms->status)));
 			ft_printf("%s: %s\n", ms->command, strerror(errno));
 			exit(1);
 		}
@@ -81,7 +83,8 @@ static void	try_exec_2(t_minishell *ms, int id, int j)
 	else
 	{
 		signal_handler(id);
-		wait(0);
+		wait(&(ms->status));
+		ms->ev->content = ft_itoa(WEXITSTATUS(ms->status));
 		while (ms->argv[++j])
 			free(ms->argv[j]);
 		free(ms->argv);

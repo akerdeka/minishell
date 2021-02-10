@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/09 17:01:14 by acharras          #+#    #+#             */
-/*   Updated: 2021/02/10 11:15:54 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 16:20:52 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct	s_minishell
 	char		**exec_arg;
 	char		**envps;
 	t_env_var	*ev;
+	int			status;
 }				t_minishell;
 
 void			main_norm(t_minishell *ms, int i);
@@ -98,10 +99,12 @@ void			ft_error_ls(t_minishell *ms);
 void			get_environement(t_minishell *ms);
 void			ft_add_shlvl(t_minishell *ms);
 void			ft_add_env(t_minishell *ms);
+void			ft_add__(t_minishell *ms);
 void			ft_no_new_var(t_minishell *ms);
 t_env_var		*ft_export_norme(t_minishell *ms, int i,
 			t_env_var *scroll_var, t_env_var *temp);
 
 char			*ft_get_content(t_minishell *ms, int k);
+int				get_command_echo_pipe(t_minishell *ms, int i);
 
 #endif

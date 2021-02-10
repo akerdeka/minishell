@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_inf.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wasayad <wasayad@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:39:13 by wasayad           #+#    #+#             */
-/*   Updated: 2021/02/08 16:31:51 by wasayad          ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 16:08:32 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ void	try_exec_pipe_inf(t_minishell *ms, int i)
 			free(ms->argv[j]);
 		free(ms->argv);
 		signal_handler(id);
-		wait(0);
+		wait(&(ms->status));
+		ms->ev->content = ft_itoa(WEXITSTATUS(ms->status));
 		try_exec_pipe_inf_read(ms, i);
 	}
 }

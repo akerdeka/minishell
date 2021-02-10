@@ -6,7 +6,7 @@
 /*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 17:21:30 by wasayad           #+#    #+#             */
-/*   Updated: 2021/02/10 13:31:17 by akerdeka         ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 16:18:41 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ static void	ft_dollar_var_norme(t_minishell *ms, t_env_var *temp,
 			== ' ')
 			j = 1;
 		get_command(ms, i + 1);
-		while ((temp = temp->next_var))
-			if (ft_strcmp(temp->var, ms->command) == 0)
-				break ;
+		if (ft_strcmp(temp->var, ms->command) != 0)
+			while ((temp = temp->next_var))
+				if (ft_strcmp(temp->var, ms->command) == 0)
+					break ;
 		ft_strdel_free(&(ms->command));
 		ms->command = ft_strdup(temp->content);
 		ms->command_tab[0] = ft_strjoin_free_s1(ms->command_tab[0],

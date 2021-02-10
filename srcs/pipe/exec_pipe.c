@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acharras <acharras@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: akerdeka <akerdeka@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 14:32:27 by wasayad           #+#    #+#             */
-/*   Updated: 2021/02/09 14:55:32 by acharras         ###   ########lyon.fr   */
+/*   Updated: 2021/02/10 16:09:29 by akerdeka         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,13 @@ static void	try_exec_pipe(t_minishell *ms, int k)
 	}
 	else
 	{
+		signal_handler(id);
 		while (ms->argv[++i])
 			free(ms->argv[i]);
 		free(ms->argv);
+		wait(&(ms->status));
+		ms->ev->content = ft_itoa(WEXITSTATUS(ms->status));
 	}
-	signal_handler(id);
-	wait(0);
 }
 
 static int	get_command_pipe(t_minishell *ms, int k)
